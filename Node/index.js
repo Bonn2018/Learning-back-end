@@ -1,4 +1,4 @@
-const auth = require('./containers/auth');
+const { auth, signIn } = require('./containers/auth');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -19,6 +19,11 @@ app.use(bodyParser.json());
 app.post('/auth', cors(corsOptions), (request, response) => {
   auth(db, request, response)
 });
+
+app.post('/sign_in', cors(corsOptions), (request, response) => {
+  signIn(db, request, response)
+});
+
 
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, client) {
   if (err) {
