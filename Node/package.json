@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "start": "node index.js",
+    "mongo": "mongod",
+    "mongo_host": "mongo --host localhost:27017",
+    "landing": "parcel ../landing/index.html"
+  },
   "name": "modulesapp",
   "version": "1.0.0",
   "dependencies": {

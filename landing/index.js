@@ -17,7 +17,6 @@ function changeField(type, e) {
   fields[type] = e.target.value;
 }
 
-
 function sendAuthData() {
   fetch('http://localhost:4000/auth', 
   {

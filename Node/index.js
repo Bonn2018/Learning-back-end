@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 4000;
 const MongoClient = require('mongodb').MongoClient;
+const { errHandler } = require('./containers/error/error_hundler');
 const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -16,7 +17,7 @@ app.options('*', cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/auth', cors(corsOptions), (request, response) => {
+app.post('/auth', cors(corsOptions), (request, response, next) => {
   auth(db, request, response)
 });
 

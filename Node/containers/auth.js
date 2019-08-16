@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const { errHandler} = require('./error/error_hundler');
+const Err = require('./error/error');
 
 function sendNewUser(user, db, response) {
   let userInformation = user;
@@ -7,9 +9,9 @@ function sendNewUser(user, db, response) {
 
   db.collection('Users').insert(userInformation, function (err, result) {
     if(err) {
-      console.log(err);
-      request.sendStatus(500);
+      throw new errHandler(err, response);
     }
+
     response.json({ "status": "logged in" });
   });
 }
@@ -19,14 +21,13 @@ function auth(db, request, response) {
 
   db.collection('Users').findOne({ email: user.email }, function (err, doc) {
     if(err) {
-      console.log(err);
-      return request.sendStatus(500);
+      throw new errHandler(err, response);
     }
 
     if(!doc) {
       sendNewUser(user, db, response);
     } else {
-      response.json({ "status": "email already use" });
+      throw new Error('fff')
     }
   });
 }
@@ -36,16 +37,14 @@ function signIn(db, request, response) {
 
   db.collection('Users').findOne({ email: user.email }, function (err, doc) {
     if(err) {
-      console.log(err);
-      return request.sendStatus(500);
+      throw new errHandler(err, response);
     }
     if(bcrypt.compareSync(user.password, doc.password) && !!doc) {
       response.json({ "status": "welcome" });
      } else if(!doc) {
-      response.json({ "status": "email not found" });
-
+      throw new errHandler('emailNotLogined', response);
      } else {
-      response.json({ "status": "password wrong" });
+      throw new errHandler('passwordWrong', response);
      }
   });
 }
